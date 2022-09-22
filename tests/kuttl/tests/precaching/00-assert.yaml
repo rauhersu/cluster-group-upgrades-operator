@@ -1,0 +1,229 @@
+apiVersion: ran.openshift.io/v1alpha1
+kind: ClusterGroupUpgrade
+metadata:
+  namespace: default
+spec:
+  clusters:
+  - spoke1
+  - spoke2
+  - spoke5
+  enable: false
+  managedPolicies:
+  - policy5-subscriptions
+  preCaching: false
+  remediationStrategy:
+    maxConcurrency: 2
+    timeout: 240
+status:
+  computedMaxConcurrency: 2
+  conditions:
+  - message: All selected clusters are valid for upgrade
+    reason: Completed
+    status: "True"
+    type: ClustersSelected
+  - message: All managed policies exist
+    reason: Completed
+    status: "True"
+    type: Validated
+  - message: The ClusterGroupUpgrade CR is not enabled
+    reason: NotEnabled
+    status: "False"
+    type: Progressing
+  copiedPolicies:
+  - cgu-policy5-subscriptions-kuttl
+  managedPoliciesContent:
+    policy5-subscriptions: '[{"kind":"Subscription","name":"sriov-network-operator-subscription","apiVersion":"operators.coreos.com/v1alpha1","namespace":"openshift-sriov-network-operator"},{"kind":"Subscription","name":"ptp-operator-subscription","apiVersion":"operators.coreos.com/v1alpha1","namespace":"openshift-ptp"},{"kind":"Subscription","name":"performance-addon-operator","apiVersion":"operators.coreos.com/v1alpha1","namespace":"openshift-performance-addon-operator"},{"kind":"Subscription","name":"cluster-logging","apiVersion":"operators.coreos.com/v1alpha1","namespace":"openshift-logging"},{"kind":"Subscription","name":"local-storage-operator","apiVersion":"operators.coreos.com/v1alpha1","namespace":"openshift-local-storage"}]'
+  managedPoliciesForUpgrade:
+  - name: policy5-subscriptions
+    namespace: default
+  managedPoliciesNs:
+    policy5-subscriptions: default
+  placementBindings:
+  - cgu-policy5-subscriptions-placement-kuttl
+  placementRules:
+  - cgu-policy5-subscriptions-placement-kuttl
+  remediationPlan:
+  - - spoke1
+    - spoke2
+  - - spoke5
+  safeResourceNames:
+    cgu-common-subscriptions-policy-config: cgu-common-subscriptions-policy-config-kuttl
+    cgu-default-subscription-cluster-logging: cgu-default-subscription-cluster-logging-kuttl
+    cgu-default-subscription-local-storage-operator: cgu-default-subscription-local-storage-operator-kuttl
+    cgu-default-subscription-performance-addon-operator: cgu-default-subscription-performance-addon-operator-kuttl
+    cgu-default-subscription-ptp-operator-subscription: cgu-default-subscription-ptp-operator-subscription-kuttl
+    cgu-default-subscription-sriov-network-operator-subscription: cgu-default-subscription-sriov-network-operator-subscription-kuttl
+    cgu-policy5-subscriptions: cgu-policy5-subscriptions-kuttl
+    cgu-policy5-subscriptions-placement: cgu-policy5-subscriptions-placement-kuttl
+  status: {}
+---
+# Check that all the ManagedClusterViews exist in all the spoke namespaces.
+# Check for the cluster logging operator subscription.
+apiVersion: view.open-cluster-management.io/v1beta1
+kind: ManagedClusterView
+metadata:
+  name: cgu-default-subscription-cluster-logging-kuttl
+  namespace: spoke1
+spec:
+  scope:
+    name: cluster-logging
+    namespace: openshift-logging
+    resource: Subscription.operators.coreos.com
+---
+apiVersion: view.open-cluster-management.io/v1beta1
+kind: ManagedClusterView
+metadata:
+  name: cgu-default-subscription-cluster-logging-kuttl
+  namespace: spoke2
+spec:
+  scope:
+    name: cluster-logging
+    namespace: openshift-logging
+    resource: Subscription.operators.coreos.com
+---
+apiVersion: view.open-cluster-management.io/v1beta1
+kind: ManagedClusterView
+metadata:
+  name: cgu-default-subscription-cluster-logging-kuttl
+  namespace: spoke5
+spec:
+  scope:
+    name: cluster-logging
+    namespace: openshift-logging
+    resource: Subscription.operators.coreos.com
+---
+# Check for the local storage operator subscription.
+apiVersion: view.open-cluster-management.io/v1beta1
+kind: ManagedClusterView
+metadata:
+  name: cgu-default-subscription-local-storage-operator-kuttl
+  namespace: spoke1
+spec:
+  scope:
+    name: local-storage-operator
+    namespace: openshift-local-storage
+    resource: Subscription.operators.coreos.com
+---
+apiVersion: view.open-cluster-management.io/v1beta1
+kind: ManagedClusterView
+metadata:
+  name: cgu-default-subscription-local-storage-operator-kuttl
+  namespace: spoke2
+spec:
+  scope:
+    name: local-storage-operator
+    namespace: openshift-local-storage
+    resource: Subscription.operators.coreos.com
+---
+apiVersion: view.open-cluster-management.io/v1beta1
+kind: ManagedClusterView
+metadata:
+  name: cgu-default-subscription-local-storage-operator-kuttl
+  namespace: spoke5
+spec:
+  scope:
+    name: local-storage-operator
+    namespace: openshift-local-storage
+    resource: Subscription.operators.coreos.com
+---
+# Check for the PAO operator subscription.
+apiVersion: view.open-cluster-management.io/v1beta1
+kind: ManagedClusterView
+metadata:
+  name: cgu-default-subscription-performance-addon-operator-kuttl
+  namespace: spoke1
+spec:
+  scope:
+    name: performance-addon-operator
+    namespace: openshift-performance-addon-operator
+    resource: Subscription.operators.coreos.com
+---
+apiVersion: view.open-cluster-management.io/v1beta1
+kind: ManagedClusterView
+metadata:
+  name: cgu-default-subscription-performance-addon-operator-kuttl
+  namespace: spoke2
+spec:
+  scope:
+    name: performance-addon-operator
+    namespace: openshift-performance-addon-operator
+    resource: Subscription.operators.coreos.com
+---
+apiVersion: view.open-cluster-management.io/v1beta1
+kind: ManagedClusterView
+metadata:
+  name: cgu-default-subscription-performance-addon-operator-kuttl
+  namespace: spoke5
+spec:
+  scope:
+    name: performance-addon-operator
+    namespace: openshift-performance-addon-operator
+    resource: Subscription.operators.coreos.com
+---
+# Check for the PTP operator subscription.
+apiVersion: view.open-cluster-management.io/v1beta1
+kind: ManagedClusterView
+metadata:
+  name: cgu-default-subscription-ptp-operator-subscription-kuttl
+  namespace: spoke1
+spec:
+  scope:
+    name: ptp-operator-subscription
+    namespace: openshift-ptp
+    resource: Subscription.operators.coreos.com
+---
+apiVersion: view.open-cluster-management.io/v1beta1
+kind: ManagedClusterView
+metadata:
+  name: cgu-default-subscription-ptp-operator-subscription-kuttl
+  namespace: spoke2
+spec:
+  scope:
+    name: ptp-operator-subscription
+    namespace: openshift-ptp
+    resource: Subscription.operators.coreos.com
+---
+apiVersion: view.open-cluster-management.io/v1beta1
+kind: ManagedClusterView
+metadata:
+  name: cgu-default-subscription-ptp-operator-subscription-kuttl
+  namespace: spoke5
+spec:
+  scope:
+    name: ptp-operator-subscription
+    namespace: openshift-ptp
+    resource: Subscription.operators.coreos.com
+---
+# Check for the SRIOV operator subscription.
+apiVersion: view.open-cluster-management.io/v1beta1
+kind: ManagedClusterView
+metadata:
+  name: cgu-default-subscription-sriov-network-operator-subscription-kuttl
+  namespace: spoke1
+spec:
+  scope:
+    name: sriov-network-operator-subscription
+    namespace: openshift-sriov-network-operator
+    resource: Subscription.operators.coreos.com
+---
+apiVersion: view.open-cluster-management.io/v1beta1
+kind: ManagedClusterView
+metadata:
+  name: cgu-default-subscription-sriov-network-operator-subscription-kuttl
+  namespace: spoke2
+spec:
+  scope:
+    name: sriov-network-operator-subscription
+    namespace: openshift-sriov-network-operator
+    resource: Subscription.operators.coreos.com
+---
+apiVersion: view.open-cluster-management.io/v1beta1
+kind: ManagedClusterView
+metadata:
+  name: cgu-default-subscription-sriov-network-operator-subscription-kuttl
+  namespace: spoke5
+spec:
+  scope:
+    name: sriov-network-operator-subscription
+    namespace: openshift-sriov-network-operator
+    resource: Subscription.operators.coreos.com

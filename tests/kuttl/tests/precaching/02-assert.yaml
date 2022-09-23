@@ -30,9 +30,9 @@ status:
     reason: NotEnabled
     status: "False"
     type: Progressing
-  - message: Precaching is not completed
-    reason: InProgress
-    status: "False"
+  - message: Precaching is completed for all clusters
+    reason: Completed
+    status: "True"
     type: PrecachingSuceeded
   - message: 'The ClusterGroupUpgrade CR has managed policies that are missing:
       [policy5-subscriptions]'

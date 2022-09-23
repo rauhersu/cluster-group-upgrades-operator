@@ -1,0 +1,7 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+
+commands:
+  # patch to hint a completed precaching
+  - command: ../../../../deploy/precaching/success/patch-cgu-precaching-status.sh default
+    ignoreFailure: false

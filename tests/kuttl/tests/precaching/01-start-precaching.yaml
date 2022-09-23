@@ -3,5 +3,5 @@ kind: TestStep
 
 commands:
   # Start precaching
-  - command: oc --namespace=default patch clustergroupupgrade.ran.openshift.io/cgu --patch '{"spec":{"preCaching":true}}' --type=merge
+  - command: oc --namespace=default patch clustergroupupgrade.ran.openshift.io/cgu --patch '{"spec":{"enable":true,"preCaching":true}}' --type=merge
     ignoreFailure: false

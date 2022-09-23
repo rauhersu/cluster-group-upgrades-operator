@@ -8,7 +8,7 @@ spec:
   - spoke1
   - spoke2
   - spoke5
-  enable: false
+  enable: true
   managedPolicies:
   - policy5-subscriptions
   preCaching: true
